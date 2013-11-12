@@ -41,7 +41,6 @@ public class ITCutiesReaderAppActivity extends ActionBarActivity {
 		new GetRSSDataTask().execute("http://www.itcuties.com/feed/");
 
 		// http://aerostat.rpod.ru/rss.xml
-		
 
 		// Debug the thread name
 		Log.d("ITCRssReader", Thread.currentThread().getName());
@@ -119,6 +118,11 @@ public class ITCutiesReaderAppActivity extends ActionBarActivity {
 			// Set list adapter for the ListView
 			itcItems.setAdapter(adapter);
 			rs = result;
+			newsTablet = (WebView) findViewById(R.id.newsTablet);
+
+			if (getResources().getBoolean(R.bool.isTablet)) {
+				newsTablet.loadUrl(rs.get(0).getLink());
+			}
 
 			// Set list view item click listener
 			itcItems.setOnItemClickListener(this);
@@ -126,9 +130,9 @@ public class ITCutiesReaderAppActivity extends ActionBarActivity {
 
 		public void onItemClick(AdapterView<?> parent, View view, int pos,
 				long id) {
-				
+
 			if (getResources().getBoolean(R.bool.isTablet)) {
-				newsTablet= (WebView) findViewById(R.id.newsTablet);
+				//
 				newsTablet.loadUrl(rs.get(pos).getLink());
 
 			} else {
