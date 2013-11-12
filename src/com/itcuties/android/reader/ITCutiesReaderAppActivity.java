@@ -41,6 +41,7 @@ public class ITCutiesReaderAppActivity extends ActionBarActivity {
 		new GetRSSDataTask().execute("http://www.itcuties.com/feed/");
 
 		// http://aerostat.rpod.ru/rss.xml
+		
 
 		// Debug the thread name
 		Log.d("ITCRssReader", Thread.currentThread().getName());
