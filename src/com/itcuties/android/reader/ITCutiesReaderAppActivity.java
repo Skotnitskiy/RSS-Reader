@@ -132,7 +132,7 @@ public class ITCutiesReaderAppActivity extends ActionBarActivity {
 				long id) {
 
 			if (getResources().getBoolean(R.bool.isTablet)) {
-				//
+		
 				newsTablet.loadUrl(rs.get(pos).getLink());
 
 			} else {

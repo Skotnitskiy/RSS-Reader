@@ -26,6 +26,10 @@ public class Detail extends ActionBarActivity {
 		progressLayout = (LinearLayout) findViewById(R.id.progressBarLayout);
 		new GetNewsDataTask().execute();
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+		
+		if(getResources().getBoolean(R.bool.isTablet)){
+			finish();
+		}
 	}
 
 	@Override
