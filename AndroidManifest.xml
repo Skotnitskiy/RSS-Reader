@@ -21,9 +21,15 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+            
         </activity>
         <activity android:name="ITCutiesReaderAppActivity"></activity>
         <activity android:name="Detail"></activity>
+        <service android:name=".services.UpdateRssService"
+           		 android:enabled="true"
+            >
+        </service>
+        	
     </application>
 
 </manifest>

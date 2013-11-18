@@ -20,6 +20,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import com.itcuties.android.reader.data.RssItem;
+import com.itcuties.android.reader.services.UpdateRssService;
 import com.itcuties.android.reader.util.RssReader;
 
 //import com.itcuties.android.reader.listeners.ListListener;
@@ -30,20 +31,30 @@ public class ITCutiesReaderAppActivity extends ActionBarActivity {
 	private ITCutiesReaderAppActivity local;
 	List<RssItem> rs;
 	WebView news;
+	Intent updateRssIntent;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		
+
 		if (getResources().getBoolean(R.bool.isTablet))
 			setContentView(R.layout.main_sw600);
-		 else setContentView(R.layout.main);
-		
+		else
+			setContentView(R.layout.main);
+
 		local = this;
+		updateRssIntent = new Intent(ITCutiesReaderAppActivity.this, UpdateRssService.class);
 		new GetRSSDataTask().execute("http://www.itcuties.com/feed/");
+		startService(updateRssIntent);
 
 		// http://aerostat.rpod.ru/rss.xml
 
+	}
+	
+	@Override
+	protected void onDestroy() {
+		super.onDestroy();		
+		stopService(updateRssIntent);
 	}
 
 	@Override
@@ -98,8 +109,6 @@ public class ITCutiesReaderAppActivity extends ActionBarActivity {
 		protected void onPostExecute(List<RssItem> result) {
 
 			findViewById(R.id.ProgressLayout).setVisibility(View.GONE);
-			
-			
 
 			ListView itcItems = (ListView) findViewById(R.id.listMainView);
 
@@ -112,7 +121,8 @@ public class ITCutiesReaderAppActivity extends ActionBarActivity {
 
 			if (getResources().getBoolean(R.bool.isTablet)) {
 				news.loadUrl(rs.get(0).getLink());
-				findViewById(R.id.progress_tablet_layout).setVisibility(View.GONE);
+				findViewById(R.id.progress_tablet_layout).setVisibility(
+						View.GONE);
 			}
 
 			itcItems.setOnItemClickListener(this);
