@@ -13,8 +13,8 @@ import android.widget.LinearLayout;
 public class Detail extends ActionBarActivity {
 	static String url;
 	static WebView news;
-	static LinearLayout newsLayout;
-	static LinearLayout progressLayout;
+	 /*
+	static LinearLayout newsLayout;*/
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -22,8 +22,7 @@ public class Detail extends ActionBarActivity {
 		setContentView(R.layout.deital_layout);
 		news = (WebView) findViewById(R.id.webViewNews);
 		url = getIntent().getData().toString();
-		newsLayout = (LinearLayout) findViewById(R.id.WebViewLayout);
-		progressLayout = (LinearLayout) findViewById(R.id.progressBarLayout);
+		//progressLayout = (LinearLayout) findViewById(R.id.progressBarLayout);
 		new GetNewsDataTask().execute();
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		
@@ -45,25 +44,19 @@ public class Detail extends ActionBarActivity {
 
 class GetNewsDataTask extends AsyncTask<Void, Void, Void> {
 
-	@Override
-	protected void onPreExecute() {
-		super.onPreExecute();
-		Detail.newsLayout.setVisibility(View.GONE);
-		Detail.progressLayout.setVisibility(View.VISIBLE);
-	}
+	
 
 	@Override
 	protected Void doInBackground(Void... params) {
 		Detail.news.loadUrl(Detail.url);
-		SystemClock.sleep(1240);
+		
 		return null;
 	}
 
 	@Override
 	protected void onPostExecute(Void result) {
 		super.onPostExecute(result);
-		Detail.newsLayout.setVisibility(View.VISIBLE);
-		Detail.progressLayout.setVisibility(View.GONE);
+		
 	}
 
 }

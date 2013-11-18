@@ -2,10 +2,12 @@ package com.itcuties.android.reader;
 
 import java.util.List;
 
+import android.R.bool;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
@@ -27,23 +29,21 @@ public class ITCutiesReaderAppActivity extends ActionBarActivity {
 	// A reference to the local object
 	private ITCutiesReaderAppActivity local;
 	List<RssItem> rs;
-	WebView newsTablet;
+	WebView news;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		// Set view
-		setContentView(R.layout.main);
-		// imgRefresh.setAnimation(anm);
-
-		// Set reference to this activity
+		
+		if (getResources().getBoolean(R.bool.isTablet))
+			setContentView(R.layout.main_sw600);
+		 else setContentView(R.layout.main);
+		
 		local = this;
 		new GetRSSDataTask().execute("http://www.itcuties.com/feed/");
 
 		// http://aerostat.rpod.ru/rss.xml
 
-		// Debug the thread name
-		Log.d("ITCRssReader", Thread.currentThread().getName());
 	}
 
 	@Override
@@ -56,18 +56,10 @@ public class ITCutiesReaderAppActivity extends ActionBarActivity {
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		/*
-		 * LayoutInflater inflater = (LayoutInflater) getApplication()
-		 * .getSystemService(Context.LAYOUT_INFLATER_SERVICE); ImageView iv =
-		 * (ImageView) inflater.inflate(R.layout.actionbar_layout,null);
-		 * 
-		 * Animation rotation = AnimationUtils.loadAnimation(getApplication(),
-		 * R.anim.rotate); rotation.setRepeatCount(5);
-		 * iv.startAnimation(rotation);
-		 */
+
 		switch (item.getItemId()) {
 		case R.id.refresh:
-			// item.setActionView(iv);
+
 			new GetRSSDataTask().execute("http://www.itcuties.com/feed/");
 			break;
 
@@ -81,9 +73,6 @@ public class ITCutiesReaderAppActivity extends ActionBarActivity {
 
 		@Override
 		protected List<RssItem> doInBackground(String... urls) {
-
-			// Debug the task thread name
-			Log.d("ITCRssReader", Thread.currentThread().getName());
 
 			try {
 				// Create RSS reader
@@ -109,31 +98,32 @@ public class ITCutiesReaderAppActivity extends ActionBarActivity {
 		protected void onPostExecute(List<RssItem> result) {
 
 			findViewById(R.id.ProgressLayout).setVisibility(View.GONE);
-			// Get a ListView from main view
+			
+			
+
 			ListView itcItems = (ListView) findViewById(R.id.listMainView);
 
-			// Create a list adapter
 			ArrayAdapter<RssItem> adapter = new ArrayAdapter<RssItem>(local,
 					android.R.layout.simple_list_item_1, result);
-			// Set list adapter for the ListView
+
 			itcItems.setAdapter(adapter);
 			rs = result;
-			newsTablet = (WebView) findViewById(R.id.newsTablet);
+			news = (WebView) findViewById(R.id.webViewNews);
 
 			if (getResources().getBoolean(R.bool.isTablet)) {
-				newsTablet.loadUrl(rs.get(0).getLink());
+				news.loadUrl(rs.get(0).getLink());
+				findViewById(R.id.progress_tablet_layout).setVisibility(View.GONE);
 			}
 
-			// Set list view item click listener
 			itcItems.setOnItemClickListener(this);
 		}
 
 		public void onItemClick(AdapterView<?> parent, View view, int pos,
 				long id) {
-
+			// Set list view item click listener
 			if (getResources().getBoolean(R.bool.isTablet)) {
-		
-				newsTablet.loadUrl(rs.get(pos).getLink());
+
+				news.loadUrl(rs.get(pos).getLink());
 
 			} else {
 				Intent intent = new Intent(ITCutiesReaderAppActivity.this,
