@@ -2,12 +2,10 @@ package com.itcuties.android.reader;
 
 import java.util.List;
 
-import android.R.bool;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
@@ -20,10 +18,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import com.itcuties.android.reader.data.RssItem;
-import com.itcuties.android.reader.services.UpdateRssService;
 import com.itcuties.android.reader.util.RssReader;
-
-//import com.itcuties.android.reader.listeners.ListListener;
 
 public class ITCutiesReaderAppActivity extends ActionBarActivity {
 
@@ -31,7 +26,6 @@ public class ITCutiesReaderAppActivity extends ActionBarActivity {
 	private ITCutiesReaderAppActivity local;
 	List<RssItem> rs;
 	WebView news;
-	Intent updateRssIntent;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -41,20 +35,18 @@ public class ITCutiesReaderAppActivity extends ActionBarActivity {
 			setContentView(R.layout.main_sw600);
 		else
 			setContentView(R.layout.main);
-
 		local = this;
-		updateRssIntent = new Intent(ITCutiesReaderAppActivity.this, UpdateRssService.class);
-		new GetRSSDataTask().execute("http://www.itcuties.com/feed/");
-		startService(updateRssIntent);
+
+		new GetRSSDataTask().execute("http://news.liga.net/smi/rss.xml");
 
 		// http://aerostat.rpod.ru/rss.xml
 
 	}
-	
+
 	@Override
 	protected void onDestroy() {
-		super.onDestroy();		
-		stopService(updateRssIntent);
+		super.onDestroy();
+
 	}
 
 	@Override
@@ -70,8 +62,7 @@ public class ITCutiesReaderAppActivity extends ActionBarActivity {
 
 		switch (item.getItemId()) {
 		case R.id.refresh:
-
-			new GetRSSDataTask().execute("http://www.itcuties.com/feed/");
+			new GetRSSDataTask().execute("http://news.liga.net/smi/rss.xml");
 			break;
 
 		}
@@ -123,6 +114,7 @@ public class ITCutiesReaderAppActivity extends ActionBarActivity {
 				news.loadUrl(rs.get(0).getLink());
 				findViewById(R.id.progress_tablet_layout).setVisibility(
 						View.GONE);
+
 			}
 
 			itcItems.setOnItemClickListener(this);

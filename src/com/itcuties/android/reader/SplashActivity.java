@@ -30,6 +30,7 @@ public class SplashActivity extends FragmentActivity {
 		setContentView(R.layout.splash);
 		anm = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.move);
 		txtMessage = (TextView) findViewById(R.id.txtWelcomeScreen);
+		
 
 		// Start timer and launch main activity
 		IntentLauncher launcher = new IntentLauncher();
