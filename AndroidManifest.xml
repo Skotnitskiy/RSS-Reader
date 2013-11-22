@@ -27,6 +27,9 @@
         </activity>
         <activity android:name="Detail" >
         </activity>
+        <service android:name=".services.UpdateRssService">
+        </service>
     </application>
+    
 
 </manifest>

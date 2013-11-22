@@ -1,5 +1,6 @@
 package com.itcuties.android.reader;
 
+import android.app.NotificationManager;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
@@ -10,12 +11,16 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.TextView;
 
+import com.itcuties.android.reader.services.UpdateRssService;
+
 public class SplashActivity extends FragmentActivity {
 
 	private static String TAG = SplashActivity.class.getName();
 	private static long SLEEP_TIME = 5; // Sleep for some time
 	TextView txtMessage;
 	Animation anm;
+	public static Intent updateRssIntent;
+	public static NotificationManager notificationManager;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -31,6 +36,13 @@ public class SplashActivity extends FragmentActivity {
 		anm = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.move);
 		txtMessage = (TextView) findViewById(R.id.txtWelcomeScreen);
 		
+		notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+        //notifyFeedShow(this);
+		
+		if(savedInstanceState == null){
+			updateRssIntent = new Intent(SplashActivity.this, UpdateRssService.class);
+			startService(updateRssIntent);
+			}
 
 		// Start timer and launch main activity
 		IntentLauncher launcher = new IntentLauncher();

@@ -16,6 +16,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.itcuties.android.reader.data.RssItem;
 import com.itcuties.android.reader.util.RssReader;
@@ -36,7 +37,6 @@ public class ITCutiesReaderAppActivity extends ActionBarActivity {
 		else
 			setContentView(R.layout.main);
 		local = this;
-
 		new GetRSSDataTask().execute("http://news.liga.net/smi/rss.xml");
 
 		// http://aerostat.rpod.ru/rss.xml
@@ -44,9 +44,9 @@ public class ITCutiesReaderAppActivity extends ActionBarActivity {
 	}
 
 	@Override
-	protected void onDestroy() {
-		super.onDestroy();
-
+	public void onBackPressed() {
+		super.onBackPressed();
+		stopService(SplashActivity.updateRssIntent);
 	}
 
 	@Override
