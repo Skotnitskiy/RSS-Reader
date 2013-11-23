@@ -13,41 +13,47 @@ import com.itcuties.android.reader.data.RssItem;
  * SAX tag handler
  * 
  * @author ITCuties
- *
+ * 
  */
 public class RssParseHandler extends DefaultHandler {
 
 	private List<RssItem> rssItems;
-	
+
 	// Used to reference item while parsing
 	private RssItem currentItem;
-	
+
 	// Parsing title indicator
 	private boolean parsingTitle;
 	// Parsing link indicator
 	private boolean parsingLink;
-	
+	// Parsing pubDate indicator
+	private boolean parsingPubdate;
+
 	public RssParseHandler() {
 		rssItems = new ArrayList<RssItem>();
 	}
-	
+
 	public List<RssItem> getItems() {
 		return rssItems;
 	}
-	
+
 	@Override
-	public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException {
+	public void startElement(String uri, String localName, String qName,
+			Attributes attributes) throws SAXException {
 		if ("item".equals(qName)) {
 			currentItem = new RssItem();
 		} else if ("title".equals(qName)) {
 			parsingTitle = true;
 		} else if ("link".equals(qName)) {
 			parsingLink = true;
+		} else if ("pubDate".equals(qName)) {
+			parsingPubdate = true;
 		}
 	}
-	
+
 	@Override
-	public void endElement(String uri, String localName, String qName) throws SAXException {
+	public void endElement(String uri, String localName, String qName)
+			throws SAXException {
 		if ("item".equals(qName)) {
 			rssItems.add(currentItem);
 			currentItem = null;
@@ -55,11 +61,14 @@ public class RssParseHandler extends DefaultHandler {
 			parsingTitle = false;
 		} else if ("link".equals(qName)) {
 			parsingLink = false;
+		} else if ("pubDate".equals(qName)) {
+			parsingPubdate = false;
 		}
 	}
-	
+
 	@Override
-	public void characters(char[] ch, int start, int length) throws SAXException {
+	public void characters(char[] ch, int start, int length)
+			throws SAXException {
 		if (parsingTitle) {
 			if (currentItem != null)
 				currentItem.setTitle(new String(ch, start, length));
@@ -68,7 +77,12 @@ public class RssParseHandler extends DefaultHandler {
 				currentItem.setLink(new String(ch, start, length));
 				parsingLink = false;
 			}
+		} else if(parsingPubdate){
+			if (currentItem != null) {
+				currentItem.setpubDate(new String(ch,start, length));
+				parsingPubdate = false;
+			}
 		}
 	}
-	
+
 }

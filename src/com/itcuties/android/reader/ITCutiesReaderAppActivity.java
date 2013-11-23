@@ -38,6 +38,7 @@ public class ITCutiesReaderAppActivity extends ActionBarActivity {
 			setContentView(R.layout.main);
 		local = this;
 		new GetRSSDataTask().execute("http://news.liga.net/smi/rss.xml");
+		
 
 		// http://aerostat.rpod.ru/rss.xml
 
@@ -46,6 +47,7 @@ public class ITCutiesReaderAppActivity extends ActionBarActivity {
 	@Override
 	public void onBackPressed() {
 		super.onBackPressed();
+		
 		stopService(SplashActivity.updateRssIntent);
 	}
 
@@ -114,7 +116,7 @@ public class ITCutiesReaderAppActivity extends ActionBarActivity {
 				news.loadUrl(rs.get(0).getLink());
 				findViewById(R.id.progress_tablet_layout).setVisibility(
 						View.GONE);
-
+				
 			}
 
 			itcItems.setOnItemClickListener(this);
@@ -122,6 +124,8 @@ public class ITCutiesReaderAppActivity extends ActionBarActivity {
 
 		public void onItemClick(AdapterView<?> parent, View view, int pos,
 				long id) {
+			
+			Toast.makeText(local, rs.get(0).getpubDate(), Toast.LENGTH_LONG).show();
 			// Set list view item click listener
 			if (getResources().getBoolean(R.bool.isTablet)) {
 

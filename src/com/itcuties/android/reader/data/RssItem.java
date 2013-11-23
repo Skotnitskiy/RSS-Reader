@@ -13,6 +13,7 @@ public class RssItem {
 	private String title;
 	// item link
 	private String link;
+	private String  pubDate;
 
 	public String getTitle() {
 		return title;
@@ -28,6 +29,14 @@ public class RssItem {
 
 	public void setLink(String link) {
 		this.link = link;
+	}
+	
+	public String getpubDate() {
+		return pubDate;
+	}
+
+	public void setpubDate(String pubDate) {
+		this.pubDate = pubDate;
 	}
 	
 	@Override
