@@ -2,6 +2,7 @@ package com.itcuties.android.reader;
 
 import java.util.List;
 
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -25,8 +26,9 @@ public class ITCutiesReaderAppActivity extends ActionBarActivity {
 
 	// A reference to the local object
 	private ITCutiesReaderAppActivity local;
-	List<RssItem> rs;
+	static List<RssItem> rs;
 	WebView news;
+	
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -47,7 +49,7 @@ public class ITCutiesReaderAppActivity extends ActionBarActivity {
 	@Override
 	public void onBackPressed() {
 		super.onBackPressed();
-		
+
 		stopService(SplashActivity.updateRssIntent);
 	}
 
@@ -57,6 +59,10 @@ public class ITCutiesReaderAppActivity extends ActionBarActivity {
 		getMenuInflater().inflate(R.menu.main, menu);
 
 		return true;
+	}
+	public static String getLastPubDate() {
+		
+		return rs.get(0).getpubDate();			
 	}
 
 	@Override
@@ -110,22 +116,25 @@ public class ITCutiesReaderAppActivity extends ActionBarActivity {
 
 			itcItems.setAdapter(adapter);
 			rs = result;
+			
 			news = (WebView) findViewById(R.id.webViewNews);
 
 			if (getResources().getBoolean(R.bool.isTablet)) {
 				news.loadUrl(rs.get(0).getLink());
 				findViewById(R.id.progress_tablet_layout).setVisibility(
 						View.GONE);
-				
+
 			}
 
 			itcItems.setOnItemClickListener(this);
 		}
 
+		
+
 		public void onItemClick(AdapterView<?> parent, View view, int pos,
 				long id) {
-			
-			Toast.makeText(local, rs.get(0).getpubDate(), Toast.LENGTH_LONG).show();
+
+			//Toast.makeText(local, getLastPubDate(), Toast.LENGTH_LONG).show();
 			// Set list view item click listener
 			if (getResources().getBoolean(R.bool.isTablet)) {
 

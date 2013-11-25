@@ -77,9 +77,9 @@ public class RssParseHandler extends DefaultHandler {
 				currentItem.setLink(new String(ch, start, length));
 				parsingLink = false;
 			}
-		} else if(parsingPubdate){
+		} else if (parsingPubdate) {
 			if (currentItem != null) {
-				currentItem.setpubDate(new String(ch,start, length));
+				currentItem.setpubDate(new String(ch, start, length));
 				parsingPubdate = false;
 			}
 		}
