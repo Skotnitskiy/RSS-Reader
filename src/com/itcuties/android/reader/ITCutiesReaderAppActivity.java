@@ -19,6 +19,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.itcuties.android.reader.data.MyContentProvider;
 import com.itcuties.android.reader.data.RssItem;
 import com.itcuties.android.reader.util.RssReader;
 
@@ -39,6 +40,7 @@ public class ITCutiesReaderAppActivity extends ActionBarActivity {
 		else
 			setContentView(R.layout.main);
 		local = this;
+		new MyContentProvider();
 		new GetRSSDataTask().execute("http://news.liga.net/smi/rss.xml");
 		
 
@@ -59,10 +61,6 @@ public class ITCutiesReaderAppActivity extends ActionBarActivity {
 		getMenuInflater().inflate(R.menu.main, menu);
 
 		return true;
-	}
-	public static String getLastPubDate() {
-		
-		return rs.get(0).getpubDate();			
 	}
 
 	@Override
