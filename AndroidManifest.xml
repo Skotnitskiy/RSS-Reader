@@ -27,9 +27,10 @@
         </activity>
         <activity android:name="Detail" >
         </activity>
-        <service android:name=".services.UpdateRssService">
+
+        <service android:name=".services.UpdateRssService" >
         </service>
+        <provider android:name=".data.MyContentProvider" android:authorities="com.itcuties.android.reader.data"></provider>
     </application>
-    
 
 </manifest>

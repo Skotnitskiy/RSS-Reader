@@ -60,7 +60,7 @@ public class UpdateRssService extends Service {
 			}
 		}, TIMER_START_DELAY, delay * 1000 * 60);
 
-		return START_REDELIVER_INTENT;
+		return START_REDELIVER_INTENT;//***
 
 	}
 

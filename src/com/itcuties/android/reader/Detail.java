@@ -30,7 +30,17 @@ public class Detail extends ActionBarActivity {
 			finish();
 		}
 	}
+	
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
 
+		getMenuInflater().inflate(R.menu.main, menu);
+		menu.getItem(2).setVisible(false);
+		
+		
+
+		return true;
+	}
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {

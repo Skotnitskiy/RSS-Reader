@@ -1,9 +1,20 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
-xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto" >
 
-    <item android:id="@+id/refresh"
-          android:icon="@drawable/ic_menu_refresh"
-          android:title="refresh"
-          app:showAsAction="always"
-          />
+    <item
+        android:id="@+id/like"
+        android:icon="@drawable/ic_like"
+        android:title="like"
+        app:showAsAction="always"/>
+    <item
+        android:id="@+id/dislike"
+        android:icon="@drawable/ic_dislike"
+        android:title="dislike"
+        app:showAsAction="always"/>
+    <item
+        android:id="@+id/refresh"
+        android:icon="@drawable/ic_menu_refresh"
+        android:title="refresh"
+        app:showAsAction="always"/>
+
 </menu>
