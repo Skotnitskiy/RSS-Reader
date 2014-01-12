@@ -2,13 +2,12 @@ package com.itcuties.android.reader;
 
 import java.util.List;
 
-import android.content.ContentValues;
 import android.content.Intent;
-import android.database.Cursor;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.ActionBarActivity;
+import android.support.v7.widget.ShareActionProvider;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -19,18 +18,13 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
-import com.itcuties.android.reader.data.MyContentProvider;
 import com.itcuties.android.reader.data.RssItem;
 import com.itcuties.android.reader.util.RssReader;
 
 public class ITCutiesReaderAppActivity extends ActionBarActivity {
 	final String LOG_TAG = "myLogs";
-
-	final Uri LIKES_URI = Uri
-			.parse("content://com.itcuties.android.reader.data/likes");
-
-	final String LIKE_ARTICLE = "article";
-
+	public static Intent intent;
+	public static ShareActionProvider mShareActionProvider;
 	// A reference to the local object
 	private ITCutiesReaderAppActivity local;
 	static List<RssItem> rs;
@@ -45,11 +39,7 @@ public class ITCutiesReaderAppActivity extends ActionBarActivity {
 		else
 			setContentView(R.layout.main);
 		local = this;
-		new GetRSSDataTask().execute("http://news.liga.net/smi/rss.xml");
-		Cursor cursor = getContentResolver().query(LIKES_URI, null, null, null,
-				null);
-		
-		startManagingCursor(cursor);
+		new GetRSSDataTask().execute("http://www.news.liga.net/smi/rss.xml"); // news.liga.net/smi/rss.xml
 
 	}
 
@@ -58,6 +48,7 @@ public class ITCutiesReaderAppActivity extends ActionBarActivity {
 		super.onBackPressed();
 
 		stopService(SplashActivity.updateRssIntent);
+
 	}
 
 	@Override
@@ -67,7 +58,14 @@ public class ITCutiesReaderAppActivity extends ActionBarActivity {
 		if (!getResources().getBoolean(R.bool.isTablet)) {
 			menu.getItem(0).setVisible(false);
 			menu.getItem(1).setVisible(false);
+			menu.getItem(3).setVisible(false);
 		}
+		MenuItem item = menu.findItem(R.id.share);
+		intent = new Intent(Intent.ACTION_SEND);
+		intent.setType("text/*");
+		mShareActionProvider = (ShareActionProvider) MenuItemCompat
+				.getActionProvider(item);
+
 		return true;
 	}
 
@@ -76,7 +74,9 @@ public class ITCutiesReaderAppActivity extends ActionBarActivity {
 
 		switch (item.getItemId()) {
 		case R.id.refresh:
-			new GetRSSDataTask().execute("http://news.liga.net/smi/rss.xml");
+			new GetRSSDataTask()
+					.execute("http://www.news.liga.net/smi/rss.xml");// http://news.liga.net/smi/rss.xml
+			// http://news.yandex.ua/index.rss
 			break;
 
 		}
@@ -94,10 +94,6 @@ public class ITCutiesReaderAppActivity extends ActionBarActivity {
 				// Create RSS reader
 				RssReader rssReader = new RssReader(urls[0]);
 
-				ContentValues cv = new ContentValues();
-				cv.put(LIKE_ARTICLE, "name 4");
-				//Uri newUri = getContentResolver().insert(LIKES_URI, cv);
-				
 				// Parse RSS, get items
 				return rssReader.getItems();
 
@@ -133,7 +129,9 @@ public class ITCutiesReaderAppActivity extends ActionBarActivity {
 				news.loadUrl(rs.get(0).getLink());
 				findViewById(R.id.progress_tablet_layout).setVisibility(
 						View.GONE);
-
+				intent.putExtra(Intent.EXTRA_TEXT, rs.get(0).getLink());
+				// Устанавливаем интент
+				mShareActionProvider.setShareIntent(intent);
 			}
 
 			itcItems.setOnItemClickListener(this);
@@ -148,11 +146,19 @@ public class ITCutiesReaderAppActivity extends ActionBarActivity {
 			if (getResources().getBoolean(R.bool.isTablet)) {
 
 				news.loadUrl(rs.get(pos).getLink());
+				// Создаем интент
+				intent.putExtra(Intent.EXTRA_TEXT, rs.get(pos).getLink());
+				// Устанавливаем интент
+				mShareActionProvider.setShareIntent(intent);
 
 			} else {
 				Intent intent = new Intent(ITCutiesReaderAppActivity.this,
 						Detail.class);
-				intent.setData(Uri.parse(rs.get(pos).getLink()));
+				Bundle b = new Bundle();
+				b.putString("link", rs.get(pos).getLink());
+				// intent.setData(Uri.parse(rs.get(pos).getLink()));
+				intent.putExtra("news", b);
+
 				ITCutiesReaderAppActivity.this.startActivity(intent);
 
 			}

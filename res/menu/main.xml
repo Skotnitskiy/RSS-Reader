@@ -1,6 +1,11 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto" >
-
+<item
+        android:id="@+id/share"
+        app:showAsAction="always"
+        android:orderInCategory="1"
+        app:actionProviderClass="android.support.v7.widget.ShareActionProvider"
+        android:title="Share"/>
     <item
         android:id="@+id/like"
         android:icon="@drawable/ic_like"
@@ -16,5 +21,8 @@
         android:icon="@drawable/ic_menu_refresh"
         android:title="refresh"
         app:showAsAction="always"/>
+    
+    
+     
 
 </menu>
